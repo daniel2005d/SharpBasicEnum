@@ -35,7 +35,9 @@ namespace SharpSearchInformation.Utils
 
         public static void PrintError(Exception ex)
         {
-            Console.WriteLine(ex.Message.Pastel(Color.Red));
+
+            Console.WriteLine($" {"[-]".Pastel(232, 7, 7)} {ex.Message.Pastel(Color.Red)}");
+            Console.WriteLine();
         }
 
         public static void PrintIcon()

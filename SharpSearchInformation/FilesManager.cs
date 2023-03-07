@@ -23,6 +23,10 @@ namespace SharpSearchInformation
       
         internal List<TextModel> SearchText(string path, string text2find, string pattern = "*.*")
         {
+            if (!Directory.Exists(path))
+            {
+                throw new DirectoryNotFoundException($"Directory {path} does not exists");
+            }
             List<TextModel> findtext = new List<TextModel>();
             try
             {

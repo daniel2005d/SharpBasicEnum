@@ -10,37 +10,45 @@ namespace SharpSearchInformation
     {
         static void Main(string[] args)
         {
-            ConsoleHelp.PrintBanner();
-            var arguments = CommandLineArguments.ArgParse(args);
-            if (!string.IsNullOrEmpty(arguments.Text))
+            try
             {
-                FilesManager filesManager = new FilesManager(arguments.PreviousLength, arguments.NextLength);
-                filesManager.OnFound += FilesManager_OnFound;
-                List<string> texttofind = new List<string>() { arguments.Text};
-                if (arguments.ConcatWithUser)
+                ConsoleHelp.PrintBanner();
+                var arguments = CommandLineArguments.ArgParse(args);
+                if (!string.IsNullOrEmpty(arguments.Text))
                 {
-                    UsersManager usersManager = new UsersManager();
-                    List<UserModel> users = usersManager.GetAllUsers();
-                    foreach (var user in users)
+                    FilesManager filesManager = new FilesManager(arguments.PreviousLength, arguments.NextLength);
+                    filesManager.OnFound += FilesManager_OnFound;
+                    List<string> texttofind = new List<string>() { arguments.Text };
+                    if (arguments.ConcatWithUser)
                     {
-                        texttofind.Add($"{user.Name} {arguments.Text}");
-                        texttofind.Add($"{arguments.Text} {user.Name}");
-                        Console.WriteLine($"{user.SID}:{user.Name.Pastel(Color.FromArgb(140, 237, 36))} Enabled:{user.IsEnabled}");
+                        UsersManager usersManager = new UsersManager();
+                        List<UserModel> users = usersManager.GetAllUsers();
+                        foreach (var user in users)
+                        {
+                            texttofind.Add($"{user.Name} {arguments.Text}");
+                            texttofind.Add($"{arguments.Text} {user.Name}");
+                            Console.WriteLine($"{user.SID}:{user.Name.Pastel(Color.FromArgb(140, 237, 36))} Enabled:{user.IsEnabled}");
+                        }
+                    }
+
+                    foreach (string seed in texttofind)
+                    {
+                        Console.WriteLine($"[+] Looking for a  Text {seed.Pastel(Color.FromArgb(19, 232, 186))}");
+                        List<TextModel> foundtext = filesManager.SearchText(arguments.Path, seed, arguments.Pattern);
+                        ConsoleHelp.PrintInfo($"Found Files {foundtext.Count.ToString()}", 203, 7, 237);
                     }
                 }
-                
-                foreach(string seed in texttofind)
+                else
                 {
-                    Console.WriteLine($"[+] Looking for a  Text {seed.Pastel(Color.FromArgb(19, 232, 186))}");
-                    List<TextModel> foundtext = filesManager.SearchText(arguments.Path, seed, arguments.Pattern);
-                    ConsoleHelp.PrintInfo($"Found Files {foundtext.Count.ToString()}",203, 7, 237);
+                    Console.WriteLine("The text to search is required".Pastel(ConsoleColor.Red));
+                    ConsoleHelp.PrintHelp();
                 }
             }
-            else
+            catch(Exception ex)
             {
-                Console.WriteLine("The text to search is required".Pastel(ConsoleColor.Red));
-                ConsoleHelp.PrintHelp();
+                ConsoleHelp.PrintError(ex);
             }
+           
         }
 
         private static void FilesManager_OnFound(TextModel text)
