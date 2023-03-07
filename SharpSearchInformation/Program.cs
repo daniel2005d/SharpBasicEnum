@@ -33,7 +33,7 @@ namespace SharpSearchInformation
                 {
                     Console.WriteLine($"[+] Looking for a  Text {seed.Pastel(Color.FromArgb(19, 232, 186))}");
                     List<TextModel> foundtext = filesManager.SearchText(arguments.Path, seed, arguments.Pattern);
-                    Console.WriteLine($"[+] Found Files {foundtext.Count.ToString().Pastel(203, 7, 237)}");
+                    ConsoleHelp.PrintInfo($"Found Files {foundtext.Count.ToString()}",203, 7, 237);
                 }
             }
             else
@@ -45,7 +45,9 @@ namespace SharpSearchInformation
 
         private static void FilesManager_OnFound(TextModel text)
         {
-            Console.WriteLine($"[+]{text.Path.Pastel(7, 237, 22)}");
+            //Console.WriteLine($" {"[+]".Pastel(86, 245, 0)}\t{text.Path.Pastel(7, 237, 22)}");
+            ConsoleHelp.PrintInfo(text.Path, 7, 237, 22);
+            
             Console.WriteLine($"\t{text.PreviousText}{text.Text.Pastel(7, 160, 237)}{text.NextText}");
         }
     }

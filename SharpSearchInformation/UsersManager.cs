@@ -8,7 +8,7 @@ namespace SharpSearchInformation
     {
         public List<UserModel> GetAllUsers()
         {
-            List < UserModel > users = new List<UserModel>();
+            List<UserModel> users = new List<UserModel>();
             using (PrincipalContext context = new PrincipalContext(ContextType.Machine))
             {
                 // Crear un objeto para realizar una búsqueda de usuarios

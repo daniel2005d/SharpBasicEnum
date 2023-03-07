@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,10 +25,27 @@ namespace SharpSearchInformation.Utils
 
         public static void PrintBanner()
         {
+            Version version = Assembly.GetExecutingAssembly().GetName().Version;
+            string strversion = $"{version.Major}.{version.Minor}.{version.Build}";
             Console.WriteLine();
             Console.WriteLine($"\t{"Author".Pastel(230, 196, 9)}: Cyb3rb0b");
-            Console.WriteLine($"\t{"Version".Pastel(230, 196, 9)}: 1.0");
+            Console.WriteLine($"\t{"Version".Pastel(230, 196, 9)}: {strversion}");
             Console.WriteLine();
+        }
+
+        public static void PrintError(Exception ex)
+        {
+            Console.WriteLine(ex.Message.Pastel(Color.Red));
+        }
+
+        public static void PrintIcon()
+        {
+            Console.Write($" {"[+]".Pastel(86, 245, 0)}");
+        }
+
+        public static void PrintInfo(string text, int r, int g, int b)
+        {
+            Console.WriteLine($" {"[+]".Pastel(86, 245, 0)}\t{text.Pastel(r,g,b)}");
         }
     }
 }

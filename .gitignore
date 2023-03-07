@@ -3,3 +3,4 @@ obj
 packages
 Debug
 .vs
+.pdb

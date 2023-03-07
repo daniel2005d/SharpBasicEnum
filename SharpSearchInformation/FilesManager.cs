@@ -1,4 +1,5 @@
 ﻿using SharpSearchInformation.Model;
+using SharpSearchInformation.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,7 +12,7 @@ namespace SharpSearchInformation
 {
     internal class FilesManager
     {
-        private List<string> EXT_BLACK_LIST = new List<string>() { ".exe", ".dll", ".com", ".png", ".jpeg", ".bmp", ".jpg" };
+        private List<string> EXT_BLACK_LIST = new List<string>() { ".exe", ".dll", ".com", ".png", ".jpeg", ".bmp", ".jpg",".msi" };
         private readonly int _previous, _next;
 
         public FilesManager(int previous, int next)
@@ -27,7 +28,7 @@ namespace SharpSearchInformation
             {
                 Regex regex = new Regex(text2find, RegexOptions.IgnoreCase);
                 string[] files = Directory.GetFiles(path, pattern, SearchOption.AllDirectories);
-                foreach (var file in files.Where(f => !EXT_BLACK_LIST.Contains(Path.GetExtension(f))))
+                foreach (var file in files.Where(f => !EXT_BLACK_LIST.Contains(Path.GetExtension(f).ToLower())))
                 {
                     string fileContent = File.ReadAllText(file);
                     if (regex.IsMatch(fileContent))
@@ -57,7 +58,7 @@ namespace SharpSearchInformation
             }
             catch (Exception ex)
             {
-
+                ConsoleHelp.PrintError(ex);
             }
 
             return findtext;
