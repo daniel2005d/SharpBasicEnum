@@ -47,16 +47,13 @@ namespace SharpSearchInformation
                 
             }
 
+            try
+            {
+                result.AddRange(Directory.GetFiles(path));
+            }
+            catch { }
+
             return result;
-            //List<string> directories = new List<string>();
-            //string[] dirs = Directory.GetDirectories(path);
-            //foreach (var dir in dirs)
-            //{
-            //    if (GetFileSecurity(dir, SECURITY_INFORMATION.DACL_SECURITY_INFORMATION, out securityDescriptor, 0, out length))
-            //    {
-            //        Console.Write("");
-            //    }
-            //}
         }
       
         internal List<TextModel> SearchText(string path, string text2find, string pattern = "*.*")
@@ -76,31 +73,35 @@ namespace SharpSearchInformation
                     string fileContent = File.ReadAllText(file);
                     if (regex.IsMatch(fileContent))
                     {
-                        Match match = regex.Match(fileContent);
-                        int startIndex = match.Index;
-                        int endIndex = match.Index + match.Length;
-                        int backchar = 0;
-                        if (startIndex > this._previous)
+                        foreach(Match match in regex.Matches(fileContent))
                         {
-                            backchar = this._previous;
+                            int startIndex = match.Index;
+                            int endIndex = match.Index + match.Length;
+                            int backchar = 0;
+                            if (startIndex > this._previous)
+                            {
+                                backchar = this._previous;
+                            }
+
+
+
+                            TextModel model = new TextModel()
+                            {
+                                Path = file,
+                                Text = fileContent.Substring(startIndex, (endIndex - startIndex)),
+                                PreviousText = fileContent.Substring(startIndex - backchar, this._previous),
+                                NextText = fileContent.Substring(endIndex),
+                            };
+
+                            findtext.Add(model);
+
+                            if (this.OnFound != null)
+                            {
+                                this.OnFound(model);
+                            }
                         }
                         
-
-
-                        TextModel model = new TextModel()
-                        {
-                            Path = file,
-                            Text = fileContent.Substring(startIndex, (endIndex - startIndex)),
-                            PreviousText = fileContent.Substring(startIndex - backchar, this._previous),
-                            NextText = fileContent.Substring(startIndex + text2find.Length, this._next),
-                        };
-
-                        findtext.Add(model);
-
-                        if (this.OnFound != null)
-                        {
-                            this.OnFound(model);
-                        }
+                       
                     }
 
 
