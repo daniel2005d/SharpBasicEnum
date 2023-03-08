@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SharpSearchInformation.Model
 {
@@ -18,6 +19,8 @@ namespace SharpSearchInformation.Model
 
         public int PreviousLength { get; set; }
         public int NextLength { get; set; }
+
+        public List<string> ExcludeExtensions { get; set; }
 
     }
 }

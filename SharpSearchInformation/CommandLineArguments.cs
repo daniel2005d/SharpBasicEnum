@@ -43,6 +43,10 @@ namespace SharpSearchInformation
                         i++;
                         options.NextLength = int.Parse(args[i]);
                         break;
+                    case "--exclude":
+                        i++;
+                        options.ExcludeExtensions = args[i].Split(new char[] { ',' }).ToList();
+                        break;
 
                 }
             }

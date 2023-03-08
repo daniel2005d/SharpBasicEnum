@@ -21,12 +21,15 @@ namespace SharpSearchInformation.Utils
             Console.WriteLine("\t--concat-with-user: Adds at the beginning and at the end of the text, the names of the system users.");
             Console.WriteLine("\t--previous-length|-p: Sets the text size to display before matching the searched text.");
             Console.WriteLine("\t--next-length|-n: Sets the text size to display after matching the searched text.");
+            Console.WriteLine("\t--exclude: List of exclude extensions, separated by coma.");
+            
         }
 
         public static void PrintBanner()
         {
             Version version = Assembly.GetExecutingAssembly().GetName().Version;
-            string strversion = $"{version.Major}.{version.Minor}.{version.Build}";
+            
+            string strversion = $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
             Console.WriteLine();
             Console.WriteLine($"\t{"Author".Pastel(230, 196, 9)}: Cyb3rb0b");
             Console.WriteLine($"\t{"Version".Pastel(230, 196, 9)}: {strversion}");
@@ -47,7 +50,7 @@ namespace SharpSearchInformation.Utils
 
         public static void PrintInfo(string text, int r, int g, int b)
         {
-            Console.WriteLine($" {"[+]".Pastel(86, 245, 0)}\t{text.Pastel(r,g,b)}");
+            Console.WriteLine($" {"[+]".Pastel(86, 245, 0)} {text.Pastel(r,g,b)}");
         }
     }
 }

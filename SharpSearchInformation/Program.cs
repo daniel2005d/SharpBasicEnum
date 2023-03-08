@@ -16,7 +16,7 @@ namespace SharpSearchInformation
                 var arguments = CommandLineArguments.ArgParse(args);
                 if (!string.IsNullOrEmpty(arguments.Text))
                 {
-                    FilesManager filesManager = new FilesManager(arguments.PreviousLength, arguments.NextLength);
+                    FilesManager filesManager = new FilesManager(arguments.PreviousLength, arguments.NextLength, arguments.ExcludeExtensions);
                     filesManager.OnFound += FilesManager_OnFound;
                     List<string> texttofind = new List<string>() { arguments.Text };
                     if (arguments.ConcatWithUser)

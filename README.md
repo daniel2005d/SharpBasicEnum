@@ -10,6 +10,7 @@
         * --concat-with-user: Adds at the beginning and at the end of the text, the names of the system users.
         * --previous-length|-p: Sets the text size to display before matching the searched text.
         * --next-length|-n: Sets the text size to display after matching the searched text.
+		* ----exclude: Sets the exclude extension, separated by coma. (ex: .dat, .pack, .exe)
 		
 		
 # PortScanner
