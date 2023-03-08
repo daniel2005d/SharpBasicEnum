@@ -78,19 +78,23 @@ namespace SharpSearchInformation
                             int startIndex = match.Index;
                             int endIndex = match.Index + match.Length;
                             int backchar = 0;
+                            int endchar = this._next;
                             if (startIndex > this._previous)
                             {
                                 backchar = this._previous;
                             }
 
-
+                            if ((endIndex + this._next) > fileContent.Length)
+                            {
+                                endchar = (fileContent.Length-endIndex);
+                            }
 
                             TextModel model = new TextModel()
                             {
                                 Path = file,
                                 Text = fileContent.Substring(startIndex, (endIndex - startIndex)),
                                 PreviousText = fileContent.Substring(startIndex - backchar, this._previous),
-                                NextText = fileContent.Substring(endIndex),
+                                NextText = fileContent.Substring(endIndex, endchar),
                             };
 
                             findtext.Add(model);
