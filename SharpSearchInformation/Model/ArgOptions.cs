@@ -3,24 +3,24 @@ using System.Collections.Generic;
 
 namespace SharpSearchInformation.Model
 {
-    internal class ArgOptions
+    internal static class ArgOptions
     {
-        internal ArgOptions(){
-            this.Pattern = "*.*";
-            this.Path = Environment.CurrentDirectory;
-            this.PreviousLength = this.NextLength = 40 ;
-            this.ConcatWithUser = false;
+        static ArgOptions(){
+            Pattern = "*.*";
+            Path = Environment.CurrentDirectory;
+            PreviousLength = Subsequent = 40 ;
+            ConcatWithUser = false;
         }
 
-        public string Path { get; set; }
-        public string Pattern { get; set; }
-        public string Text { get; set; }
-        public bool ConcatWithUser { get; set; }
+        public static string Path { get; set; }
+        public static string Pattern { get; set; }
+        public static string Text { get; set; }
+        public static bool ConcatWithUser { get; set; }
 
-        public int PreviousLength { get; set; }
-        public int NextLength { get; set; }
+        public static int PreviousLength { get; set; }
+        public static int Subsequent { get; set; }
 
-        public List<string> ExcludeExtensions { get; set; }
+        public static List<string> ExcludeExtensions { get; set; }
 
     }
 }

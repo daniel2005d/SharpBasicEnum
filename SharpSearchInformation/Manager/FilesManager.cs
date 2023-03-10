@@ -1,4 +1,5 @@
-﻿using SharpSearchInformation.Model;
+﻿using SharpSearchInformation.Manager;
+using SharpSearchInformation.Model;
 using SharpSearchInformation.Utils;
 using System;
 using System.Collections.Generic;
@@ -9,10 +10,11 @@ using System.Security.AccessControl;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static SharpSearchInformation.Manager.CustomEvents;
 
 namespace SharpSearchInformation
 {
-    internal class FilesManager
+    internal class FilesManager : ManagerBase
     {
         private List<string> EXT_BLACK_LIST = new List<string>() { ".exe", ".dll", ".com", ".png", ".jpeg", ".bmp", ".jpg",".msi" };
         private readonly int _previous, _next;
@@ -66,49 +68,29 @@ namespace SharpSearchInformation
             List<TextModel> findtext = new List<TextModel>();
             try
             {
+                
                 Regex regex = new Regex(text2find, RegexOptions.IgnoreCase);
                 List<string> files = this.GetFiles(path);
                 foreach (var file in files.Where(f => !EXT_BLACK_LIST.Contains(Path.GetExtension(f).ToLower())))
                 {
                     string fileContent = File.ReadAllText(file);
-                    if (regex.IsMatch(fileContent))
+                    string output = this.Find(fileContent, text2find);
+                    if (!string.IsNullOrEmpty(output))
                     {
-                        foreach(Match match in regex.Matches(fileContent))
+                        TextModel model = new TextModel()
                         {
-                            int startIndex = match.Index;
-                            int endIndex = match.Index + match.Length;
-                            int backchar = 0;
-                            int endchar = this._next;
-                            if (startIndex > this._previous)
-                            {
-                                backchar = this._previous;
-                            }
+                            Path = file,
+                            Text = output,
+                        };
 
-                            if ((endIndex + this._next) > fileContent.Length)
-                            {
-                                endchar = (fileContent.Length-endIndex);
-                            }
+                        findtext.Add(model);
 
-                            TextModel model = new TextModel()
-                            {
-                                Path = file,
-                                Text = fileContent.Substring(startIndex, (endIndex - startIndex)),
-                                PreviousText = fileContent.Substring(startIndex - backchar, this._previous),
-                                NextText = fileContent.Substring(endIndex, endchar),
-                            };
-
-                            findtext.Add(model);
-
-                            if (this.OnFound != null)
-                            {
-                                this.OnFound(model);
-                            }
+                        if (this.OnFound != null)
+                        {
+                            this.OnFound(model);
                         }
-                        
-                       
                     }
-
-
+                    
                 }
             }
             catch (Exception ex)
@@ -119,7 +101,7 @@ namespace SharpSearchInformation
             return findtext;
         }
 
-        internal delegate void OnFoundDelegate(TextModel text);
         internal event OnFoundDelegate OnFound;
+
     }
 }

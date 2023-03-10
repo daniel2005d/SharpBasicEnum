@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using SharpSearchInformation.Utils;
 using System.Drawing;
+using SharpSearchInformation.Manager;
 
 namespace SharpSearchInformation
 {
@@ -12,35 +13,43 @@ namespace SharpSearchInformation
         {
             try
             {
+
                 ConsoleHelp.PrintBanner();
-                var arguments = CommandLineArguments.ArgParse(args);
-                if (!string.IsNullOrEmpty(arguments.Text))
+                Console.WriteLine("\u001b[38;2;230;196;9mAuthor\u001b[0m");
+                CommandLineArguments.ArgParse(args);
+                if (!string.IsNullOrEmpty(ArgOptions.Text))
                 {
-                    FilesManager filesManager = new FilesManager(arguments.PreviousLength, arguments.NextLength, arguments.ExcludeExtensions);
+                    EventLogManager logManager = new EventLogManager();
+                    logManager.OnFound += LogManager_OnFound;
+                    logManager.OnProgress += LogManager_OnProgress;
+                    FilesManager filesManager = new FilesManager(ArgOptions.PreviousLength, ArgOptions.Subsequent, ArgOptions.ExcludeExtensions);
                     filesManager.OnFound += FilesManager_OnFound;
-                    List<string> texttofind = new List<string>() { arguments.Text };
-                    if (arguments.ConcatWithUser)
+                    List<string> texttofind = new List<string>() { ArgOptions.Text };
+                    if (ArgOptions.ConcatWithUser)
                     {
                         UsersManager usersManager = new UsersManager();
                         List<UserModel> users = usersManager.GetAllUsers();
                         foreach (var user in users)
                         {
-                            texttofind.Add($"{user.Name} {arguments.Text}");
-                            texttofind.Add($"{arguments.Text} {user.Name}");
-                            Console.WriteLine($"{user.SID}:{user.Name.Pastel(Color.FromArgb(140, 237, 36))} Enabled:{user.IsEnabled}");
+                            texttofind.Add($"{user.Name} {ArgOptions.Text}");
+                            texttofind.Add($"{ArgOptions.Text} {user.Name}");
+                            $"[green][+][end]{user.SID}:{user.Name} Enabled:{user.IsEnabled}".WriteLine();
                         }
                     }
 
                     foreach (string seed in texttofind)
                     {
-                        Console.WriteLine($"[+] Looking for a  Text {seed.Pastel(Color.FromArgb(19, 232, 186))}");
-                        List<TextModel> foundtext = filesManager.SearchText(arguments.Path, seed, arguments.Pattern);
-                        ConsoleHelp.PrintInfo($"Found Files {foundtext.Count.ToString()}", 203, 7, 237);
+                        $"[green][+][end] Looking for a  Text [orange]{seed}[end]".WriteLine();
+                        List<TextModel> foundtext = filesManager.SearchText(ArgOptions.Path, seed, ArgOptions.Pattern);
+                        $"Found Files {foundtext.Count.ToString()}".WriteLine(203, 7, 237);
                     }
+
+                    ConsoleHelp.PrintInfo("================ Find into EventLog =======================");
+                    logManager.SearchText(ArgOptions.Text);
                 }
                 else
                 {
-                    Console.WriteLine("The text to search is required".Pastel(ConsoleColor.Red));
+                    "The text to search is required".WriteLine(Color.Red);
                     ConsoleHelp.PrintHelp();
                 }
             }
@@ -51,12 +60,24 @@ namespace SharpSearchInformation
            
         }
 
+        private static void LogManager_OnProgress(string message)
+        {
+            message.WriteLine(57, 15, 209);
+        }
+
+        private static void LogManager_OnFound(EventLogModel entry)
+        {
+            string header = $"[green][+][end][orange] {entry.Index}[end] {entry.EventLogName} by {entry.UserName?.ToString()} type [green]{entry.EventLogName}[end] Written Date {entry.Created.ToLongDateString()}";
+            string detail = $"\t{entry.Message}";
+            header.WriteLine();
+            detail.WriteLine();
+
+        }
+
         private static void FilesManager_OnFound(TextModel text)
         {
-            //Console.WriteLine($" {"[+]".Pastel(86, 245, 0)}\t{text.Path.Pastel(7, 237, 22)}");
-            ConsoleHelp.PrintInfo(text.Path, 7, 237, 22);
-            
-            Console.WriteLine($"\t{text.PreviousText}{text.Text.Pastel(7, 160, 237)}{text.NextText}");
+            text.Path.WriteLine();
+            text.Text.WriteLine();
         }
     }
 }

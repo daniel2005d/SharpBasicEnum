@@ -47,14 +47,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandLineArguments.cs" />
-    <Compile Include="FilesManager.cs" />
+    <Compile Include="Manager\CustomEvents.cs" />
+    <Compile Include="Manager\EventLogManager.cs" />
+    <Compile Include="Manager\FilesManager.cs" />
+    <Compile Include="Manager\ManagerBase.cs" />
     <Compile Include="Model\ArgOptions.cs" />
+    <Compile Include="Model\EventLogModel.cs" />
     <Compile Include="Model\TextModel.cs" />
     <Compile Include="Model\UserModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UsersManager.cs" />
-    <Compile Include="Utils\ConsoleExtensions.cs" />
+    <Compile Include="Manager\UsersManager.cs" />
+    <Compile Include="Utils\ConsoleExtension.cs" />
     <Compile Include="Utils\ConsoleHelp.cs" />
     <Compile Include="Utils\MimeType.cs" />
   </ItemGroup>

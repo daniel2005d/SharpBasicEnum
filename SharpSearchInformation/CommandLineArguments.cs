@@ -9,9 +9,9 @@ namespace SharpSearchInformation
 {
     internal static class CommandLineArguments
     {
-        public static ArgOptions ArgParse(string[] args)
+        public static void ArgParse(string[] args)
         {
-            ArgOptions options = new ArgOptions();
+            
             for(int i = 0; i < args.Length; i++)
             {
 
@@ -19,39 +19,37 @@ namespace SharpSearchInformation
                 {
                     case "--path":
                         i++;
-                        options.Path = args[i];
+                        ArgOptions.Path = args[i];
                         break;
                     case "--text":
                         i++;
-                        options.Text = args[i];
+                        ArgOptions.Text = args[i];
                         break;
                     case "--pattern":
                         i++;
-                        options.Pattern = args[i];
+                        ArgOptions.Pattern = args[i];
                         break;
                     case "--concat-with-user":
                         i++;
-                        options.ConcatWithUser = true;
+                        ArgOptions.ConcatWithUser = true;
                         break;
                     case "--previous-length":
                     case "-p":
                         i++;
-                        options.PreviousLength = int.Parse(args[i]);
+                        ArgOptions.PreviousLength = int.Parse(args[i]);
                         break;
                     case "--next-length":
                     case "-n":
                         i++;
-                        options.NextLength = int.Parse(args[i]);
+                        ArgOptions.Subsequent = int.Parse(args[i]);
                         break;
                     case "--exclude":
                         i++;
-                        options.ExcludeExtensions = args[i].Split(new char[] { ',' }).ToList();
+                        ArgOptions.ExcludeExtensions = args[i].Split(new char[] { ',' }).ToList();
                         break;
 
                 }
             }
-
-            return options;
         }
 
     }
