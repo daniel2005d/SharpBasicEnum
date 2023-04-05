@@ -47,6 +47,12 @@ namespace SharpSearchInformation
                         i++;
                         ArgOptions.ExcludeExtensions = args[i].Split(new char[] { ',' }).ToList();
                         break;
+                    case "--tree":
+                        ArgOptions.DirectoryList = true;
+                        break;
+                    
+                    default:
+                        throw new Exception($"Option {args[i]} it not recognized");
 
                 }
             }

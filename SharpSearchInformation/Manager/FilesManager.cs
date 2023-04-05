@@ -16,7 +16,7 @@ namespace SharpSearchInformation
 {
     internal class FilesManager : ManagerBase
     {
-        private List<string> EXT_BLACK_LIST = new List<string>() { ".exe", ".dll", ".com", ".png", ".jpeg", ".bmp", ".jpg",".msi" };
+        private List<string> EXT_BLACK_LIST = new List<string>() { ".exe", ".dll", ".com", ".png", ".jpeg", ".bmp", ".jpg",".msi", ".sys",".js",".css" };
         private readonly int _previous, _next;
 
         public FilesManager(int previous, int next, List<string> excludeextensions)
@@ -29,7 +29,7 @@ namespace SharpSearchInformation
             }
         }
 
-        private List<string> GetFiles(string path)
+        internal List<string> GetFiles(string path, string extension)
         {
             List<string> result = new List<string>();
             string[] allDirectories = Directory.GetDirectories(path);
@@ -38,24 +38,27 @@ namespace SharpSearchInformation
                 try
                 {
                     DirectoryInfo directoryInfo = new DirectoryInfo(dir);
-                    FileInfo[] info = directoryInfo.GetFiles("*", SearchOption.AllDirectories);
-                    foreach(var file in info)
+                    FileInfo[] info = directoryInfo.GetFiles(extension, SearchOption.AllDirectories);
+                    foreach (var file in info)
                     {
                         result.Add(file.FullName);
                     }
                 }
                 catch { }
 
-                
             }
 
             try
             {
-                result.AddRange(Directory.GetFiles(path));
+                result.AddRange(Directory.GetFiles(path, extension));
             }
             catch { }
 
             return result;
+        }
+        internal List<string> GetFiles(string path)
+        {
+            return this.GetFiles(path, "*");
         }
       
         internal List<TextModel> SearchText(string path, string text2find, string pattern = "*.*")

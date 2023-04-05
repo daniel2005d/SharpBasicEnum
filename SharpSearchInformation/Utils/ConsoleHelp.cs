@@ -15,6 +15,7 @@ namespace SharpSearchInformation.Utils
          
             "Usage SharpSearchInformation.exe --text <Text 2 Find> [options]".WriteLine(16, 228, 232);
             "\tOptions:".WriteLine(16, 228, 232);
+            Console.WriteLine("\t--tree: List all files from directory.");
             Console.WriteLine("\t--Path: Search path");
             Console.WriteLine("\t--text: Text to search for");
             Console.WriteLine("\t--pattern: Defines the pattern to use in the files, by default is *.*.Extensions.exe, .com, .png, .jpg are omitted.");
@@ -22,7 +23,6 @@ namespace SharpSearchInformation.Utils
             Console.WriteLine("\t--previous-length|-p: Sets the text size to display before matching the searched text.");
             Console.WriteLine("\t--next-length|-n: Sets the text size to display after matching the searched text.");
             Console.WriteLine("\t--exclude: List of exclude extensions, separated by coma.");
-            
         }
 
         public static void PrintBanner()
@@ -39,7 +39,7 @@ namespace SharpSearchInformation.Utils
         public static void PrintError(Exception ex)
         {
 
-            $"[red][-]{ex.Message}".WriteLine();
+            $"[white][-][end][red]{ex.Message}[end]".WriteLine();
             Console.WriteLine();
         }
 

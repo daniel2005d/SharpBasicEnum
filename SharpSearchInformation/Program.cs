@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using SharpSearchInformation.Utils;
 using System.Drawing;
 using SharpSearchInformation.Manager;
+using System.IO;
 
 namespace SharpSearchInformation
 {
@@ -15,7 +16,7 @@ namespace SharpSearchInformation
             {
 
                 ConsoleHelp.PrintBanner();
-                Console.WriteLine("\u001b[38;2;230;196;9mAuthor\u001b[0m");
+                
                 CommandLineArguments.ArgParse(args);
                 if (!string.IsNullOrEmpty(ArgOptions.Text))
                 {
@@ -47,9 +48,30 @@ namespace SharpSearchInformation
                     ConsoleHelp.PrintInfo("================ Find into EventLog =======================");
                     logManager.SearchText(ArgOptions.Text);
                 }
+                else if (ArgOptions.DirectoryList)
+                {
+                    FilesManager filesManager = new FilesManager(0,0,null);
+                    List<string> files = filesManager.GetFiles(ArgOptions.Path, ArgOptions.Pattern);
+                    List<string> directories = new List<string>();
+                    $"Total Found [cyan]{files.Count}[end]".WriteLine();
+                    foreach (string f in files)
+                    {
+                        FileInfo fn = new FileInfo(f);
+                        
+                        if (!directories.Contains(fn.DirectoryName))
+                        {
+                            $"[green][+][end]{fn.DirectoryName}".WriteLine();
+                            directories.Add(fn.DirectoryName);
+                        }
+                        
+                        
+                        $"\t[green][+][end] {fn.FormatFileByExtension()}[blue] Length[end]: {fn.Length.ToHuman()} - [blue]Creation Time[end]:{fn.CreationTime} - [blue]Last Write[end]: {fn.LastWriteTime}".WriteLine();
+                    }
+                }
+               
                 else
                 {
-                    "The text to search is required".WriteLine(Color.Red);
+                    "[*] [red]The text to search is required[end]".WriteLine();
                     ConsoleHelp.PrintHelp();
                 }
             }
@@ -58,6 +80,10 @@ namespace SharpSearchInformation
                 ConsoleHelp.PrintError(ex);
             }
            
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                Console.ReadLine();
+            }
         }
 
         private static void LogManager_OnProgress(string message)

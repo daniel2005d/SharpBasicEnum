@@ -42,7 +42,12 @@ namespace SharpSearchInformation.Utils
             ["[blue]"] = Color.FromArgb(0,134,255),
             ["[yellow]"] = Color.FromArgb(255,243,0),
             ["[green]"] = Color.FromArgb(159,239,0),
-            ["[orange]"] = Color.FromArgb(227, 117, 20)
+            ["[orange]"] = Color.FromArgb(227, 117, 20),
+            ["[white]"] = Color.FromArgb(255, 255, 255),
+            ["[cyan]"] = Color.FromArgb(15, 197, 217),
+            ["[lightgreen]"] = Color.FromArgb(174, 230, 7),
+            ["[darkgreen]"] = Color.FromArgb(28, 82, 3)
+
         });
         //private const string _COLOR_FORMAT = "\u001b[{0};{1};{2};{3};{4}m{5}\u001b[0m";
 

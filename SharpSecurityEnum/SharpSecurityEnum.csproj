@@ -2,13 +2,12 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <Deterministic>false</Deterministic>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5FF317E6-5069-42EE-A3FB-8FA01B171874}</ProjectGuid>
+    <ProjectGuid>{00FA1CCF-DE68-4807-9B7C-A229E4AC5186}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>SharpSearchInformation</RootNamespace>
-    <AssemblyName>SharpSearchInformation</AssemblyName>
+    <RootNamespace>SharpSecurityEnum</RootNamespace>
+    <AssemblyName>SharpSecurityEnum</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -28,7 +27,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -36,8 +35,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.DirectoryServices.AccountManagement" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,22 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandLineArguments.cs" />
-    <Compile Include="Manager\CustomEvents.cs" />
-    <Compile Include="Manager\EventLogManager.cs" />
-    <Compile Include="Manager\FilesManager.cs" />
-    <Compile Include="Manager\ManagerBase.cs" />
-    <Compile Include="Model\ArgOptions.cs" />
-    <Compile Include="Model\EventLogModel.cs" />
-    <Compile Include="Model\TextModel.cs" />
-    <Compile Include="Model\UserModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Manager\UsersManager.cs" />
-    <Compile Include="Utils\ConsoleExtension.cs" />
-    <Compile Include="Utils\ConsoleHelp.cs" />
-    <Compile Include="Utils\Extensions.cs" />
-    <Compile Include="Utils\MimeType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
