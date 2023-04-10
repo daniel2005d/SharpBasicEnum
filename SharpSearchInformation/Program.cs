@@ -79,7 +79,15 @@ namespace SharpSearchInformation
             }
             catch(Exception ex)
             {
-                ConsoleHelp.PrintError(ex);
+                if (ArgOptions.Debug)
+                {
+                    $"[red][+][end] {ex.ToString()} ".WriteLine();
+                }
+                else
+                {
+                    ConsoleHelp.PrintError(ex);
+                }
+                
             }
            
             if (System.Diagnostics.Debugger.IsAttached)

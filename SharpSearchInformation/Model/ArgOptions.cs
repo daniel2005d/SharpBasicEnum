@@ -24,5 +24,6 @@ namespace SharpSearchInformation.Model
 
         public static List<string> ExcludeExtensions { get; set; }
 
+        public static bool Debug { get; set; }
     }
 }

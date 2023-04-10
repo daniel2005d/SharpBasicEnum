@@ -50,7 +50,10 @@ namespace SharpSearchInformation
                     case "--tree":
                         ArgOptions.DirectoryList = true;
                         break;
-                    
+                    case "--debug":
+                        ArgOptions.Debug = true;
+                        break;
+
                     default:
                         throw new Exception($"Option {args[i]} it not recognized");
 

@@ -47,10 +47,14 @@ namespace SharpSearchInformation
                             result.Add(file);
                         }
                     }
-                    catch (UnauthorizedAccessException)
+                    catch (Exception ex)
                     {
-                        // El archivo no es legible, ignorarlo.
+                        if (ArgOptions.Debug)
+                        {
+                            $"[red][+][end] {ex.ToString()} ".WriteLine();
+                        }
                     }
+                    
                 }
 
                 string[] subdirectories = Directory.GetDirectories(path);
@@ -61,13 +65,22 @@ namespace SharpSearchInformation
                     {
                        result.AddRange( GetFiles(subdir, extension));
                     }
-                    catch (UnauthorizedAccessException)
+                    catch (UnauthorizedAccessException uex)
                     {
-                        // El directorio no es accesible, ignorarlo.
+                        if (ArgOptions.Debug)
+                        {
+                            $"[red][+][end] {uex.ToString()} ".WriteLine();
+                        }
                     }
                 }
             }
-            catch(UnauthorizedAccessException uex) { }
+            catch(UnauthorizedAccessException uex) 
+            {
+                if (ArgOptions.Debug)
+                {
+                    $"[red][+][end] {uex.ToString()} ".WriteLine();
+                }
+            }
             return result;
            
 
@@ -115,6 +128,10 @@ namespace SharpSearchInformation
             }
             catch (Exception ex)
             {
+                if (ArgOptions.Debug)
+                {
+                    $"[red][+][end] {ex.ToString()} ".WriteLine();
+                }
                 ConsoleHelp.PrintError(ex);
             }
 

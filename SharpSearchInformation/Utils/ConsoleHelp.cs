@@ -24,6 +24,7 @@ namespace SharpSearchInformation.Utils
             Console.WriteLine("\t--previous-length|-p: Sets the text size to display before matching the searched text.");
             Console.WriteLine("\t--next-length|-n: Sets the text size to display after matching the searched text.");
             Console.WriteLine("\t--exclude: List of exclude extensions, separated by coma.");
+            Console.WriteLine("\t--debug: Debug Mode.");
         }
 
         public static void PrintBanner()
@@ -56,7 +57,12 @@ namespace SharpSearchInformation.Utils
             {
                 $" :: Tree         : [lightgreen]{ArgOptions.DirectoryList} [end]".WriteLine();
             }
-            
+
+            if (ArgOptions.Debug)
+            {
+                $" :: Debug         : [cyan]{ArgOptions.Debug} [end]".WriteLine();
+            }
+
             "========================================".WriteLine();
             "\n".WriteLine();
         }
