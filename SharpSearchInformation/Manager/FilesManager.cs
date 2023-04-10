@@ -32,29 +32,46 @@ namespace SharpSearchInformation
         internal List<string> GetFiles(string path, string extension)
         {
             List<string> result = new List<string>();
-            string[] allDirectories = Directory.GetDirectories(path);
-            foreach (string dir in allDirectories)
-            {
-                try
-                {
-                    DirectoryInfo directoryInfo = new DirectoryInfo(dir);
-                    FileInfo[] info = directoryInfo.GetFiles(extension, SearchOption.AllDirectories);
-                    foreach (var file in info)
-                    {
-                        result.Add(file.FullName);
-                    }
-                }
-                catch { }
-
-            }
-
             try
             {
-                result.AddRange(Directory.GetFiles(path, extension));
-            }
-            catch { }
 
+                string[] files = Directory.GetFiles(path, extension);
+                foreach (string file in files)
+                {
+                    try
+                    {
+                        FileAttributes atributos = File.GetAttributes(file);
+
+                        if ((atributos & FileAttributes.ReadOnly) != FileAttributes.ReadOnly)
+                        {
+                            result.Add(file);
+                        }
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        // El archivo no es legible, ignorarlo.
+                    }
+                }
+
+                string[] subdirectories = Directory.GetDirectories(path);
+
+                foreach (string subdir in subdirectories)
+                {
+                    try
+                    {
+                       result.AddRange( GetFiles(subdir, extension));
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        // El directorio no es accesible, ignorarlo.
+                    }
+                }
+            }
+            catch(UnauthorizedAccessException uex) { }
             return result;
+           
+
+            
         }
         internal List<string> GetFiles(string path)
         {
@@ -73,7 +90,7 @@ namespace SharpSearchInformation
             {
                 
                 Regex regex = new Regex(text2find, RegexOptions.IgnoreCase);
-                List<string> files = this.GetFiles(path);
+                List<string> files = this.GetFiles(path, pattern);
                 foreach (var file in files.Where(f => !EXT_BLACK_LIST.Contains(Path.GetExtension(f).ToLower())))
                 {
                     string fileContent = File.ReadAllText(file);

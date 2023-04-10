@@ -16,10 +16,11 @@ namespace SharpSearchInformation
             {
 
                 ConsoleHelp.PrintBanner();
-                
                 CommandLineArguments.ArgParse(args);
+                
                 if (!string.IsNullOrEmpty(ArgOptions.Text))
                 {
+                    ConsoleHelp.PrintArguments();
                     EventLogManager logManager = new EventLogManager();
                     logManager.OnFound += LogManager_OnFound;
                     logManager.OnProgress += LogManager_OnProgress;
@@ -50,6 +51,7 @@ namespace SharpSearchInformation
                 }
                 else if (ArgOptions.DirectoryList)
                 {
+                    ConsoleHelp.PrintArguments();
                     FilesManager filesManager = new FilesManager(0,0,null);
                     List<string> files = filesManager.GetFiles(ArgOptions.Path, ArgOptions.Pattern);
                     List<string> directories = new List<string>();
@@ -71,8 +73,8 @@ namespace SharpSearchInformation
                
                 else
                 {
-                    "[*] [red]The text to search is required[end]".WriteLine();
                     ConsoleHelp.PrintHelp();
+                    "[*] [red]The text to search is required[end]".WriteLine();
                 }
             }
             catch(Exception ex)

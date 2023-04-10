@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpSearchInformation.Model;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -36,12 +37,37 @@ namespace SharpSearchInformation.Utils
             Console.WriteLine();
         }
 
+        public static void PrintArguments()
+        {
+            "========================================".WriteLine();
+            if (!string.IsNullOrEmpty(ArgOptions.Path))
+            {
+                $" :: Path         : [lightgreen]{ArgOptions.Path}[end]".WriteLine();
+            }
+            if (!string.IsNullOrEmpty(ArgOptions.Pattern))
+            {
+                $" :: Extensions   : [lightgreen]{ArgOptions.Pattern}[end]".WriteLine();
+            }
+            if (!string.IsNullOrEmpty(ArgOptions.Text))
+            {
+                $" :: Text         : [lightgreen]{ArgOptions.Text}[end]".WriteLine();
+            }
+            if (ArgOptions.DirectoryList)
+            {
+                $" :: Tree         : [lightgreen]{ArgOptions.DirectoryList} [end]".WriteLine();
+            }
+            
+            "========================================".WriteLine();
+            "\n".WriteLine();
+        }
+
         public static void PrintError(Exception ex)
         {
 
             $"[white][-][end][red]{ex.Message}[end]".WriteLine();
             Console.WriteLine();
         }
+
 
         public static void PrintInfo(string text)
         {
